@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichuang.mapper.ProductMapper">
+    <resultMap id="product_map" type="Product">
+        <result property="marketPrice" column="market_price"></result>
+        <result property="shopPrice" column="shop_price"></result>
+        <result property="isHot" column="is_hot"></result>
+    </resultMap>
+   <select id="getProductList" resultMap="product_map">
+        select * from product
+   </select>
+    <delete id="deleteProductByPid" parameterType="Integer">
+        delete from product where pid = #{pid}
+    </delete>
+    <insert id="saveProduct" parameterType="Product">
+        insert into product values(#{pid} , #{pname}
+         , #{marketPrice},#{shopPrice},#{pimage} ,#{pdate} ,#{isHot}
+         , #{pdesc} , 0 , #{cid})
+    </insert>
+    <select id="getProductByPid" parameterType="Integer" resultMap="product_map">
+        select * from product where pid = #{pid}
+    </select>
+    <update id="updateProduct" parameterType="Product">
+        update product
+        <set>
+            <if test="pname != null and pname != ''">
+                pname = #{pname},
+            </if>
+            <if test="marketPrice != null and marketPrice != ''">
+                market_price = #{marketPrice},
+            </if>
+            <if test="shopPrice != null and shopPrice != ''">
+                shop_price = #{shopPrice},
+            </if>
+            <if test="pdate != null and pdate != ''">
+                pdate = #{pdate},
+            </if>
+            <if test="pdesc != null and pdesc != ''">
+                pdesc = #{pdesc},
+            </if>
+            <if test="cid != null and cid != ''">
+                cid = #{cid},
+            </if>
+            pid = #{pid}
+        </set>
+        <where>
+            pid = #{pid}
+        </where>
+    </update>
+</mapper>
